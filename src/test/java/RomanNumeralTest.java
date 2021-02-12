@@ -16,16 +16,19 @@ public class RomanNumeralTest {
 	void convertRomanToArabic() {
 		RomanNumeralConverter converter = new RomanNumeralConverter();
 		
-		assertThat(converter.convert("i")).isEqualTo(1);
-		assertThat(converter.convert("ii")).isEqualTo(2);
-		assertThat(converter.convert("iii")).isEqualTo(3);
-		assertThat(converter.convert("iv")).isEqualTo(4);
-		assertThat(converter.convert("v")).isEqualTo(5);
-		assertThat(converter.convert("vi")).isEqualTo(6);
-		assertThat(converter.convert("vii")).isEqualTo(7);
-		assertThat(converter.convert("viii")).isEqualTo(8);
-		assertThat(converter.convert("ix")).isEqualTo(9);
-		assertThat(converter.convert("x")).isEqualTo(10);
+		assertThat(converter.convert("I")).isEqualTo(1);
+		assertThat(converter.convert("II")).isEqualTo(2);
+		assertThat(converter.convert("III")).isEqualTo(3);
+		assertThat(converter.convert("IV")).isEqualTo(4);
+		assertThat(converter.convert("V")).isEqualTo(5);
+		assertThat(converter.convert("VI")).isEqualTo(6);
+		assertThat(converter.convert("VII")).isEqualTo(7);
+		assertThat(converter.convert("VIII")).isEqualTo(8);
+		assertThat(converter.convert("IX")).isEqualTo(9);
+		assertThat(converter.convert("X")).isEqualTo(10);
+		assertThat(converter.convert("XIV")).isEqualTo(14);
+		assertThat(converter.convert("XIX")).isEqualTo(19);
+		assertThat(converter.convert("XCIX")).isEqualTo(99);
 	}
 	
 	@Test
