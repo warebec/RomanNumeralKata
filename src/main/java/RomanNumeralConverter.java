@@ -18,14 +18,16 @@ public class RomanNumeralConverter {
 	public int convert(String given) {
 		int result = symbolsMap.get(given.charAt(0));
 		if (given.length() > 1) {
-			for (int i = 1; i < given.length(); i++) {
-			  int first = result;
-			  int second = symbolsMap.get(given.charAt(i));
-			  if (second > first) {
-				  result += (second - first);
+			  int second = symbolsMap.get(given.charAt(1));
+			  if (second > result) {
+				  result = second - result;
+				  if (given.length() > 2) {
+					  result += convert(given.substring(2));
+				  }
+			  } else {
+			  	result += convert(given.substring(1));
 			  }
-			}
 		}
-		return 0;
+		return result;
 	}
 }
