@@ -1,36 +1,16 @@
 package test.java;
 
-import static org.assertj.core.api.Assertions.*;
+import main.java.ArabicNumeralConverter;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
-import org.junit.jupiter.api.Test;
-
-import main.java.ArabicNumeralConverter;
-import main.java.RomanNumeralConverter;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RomanNumeralTest {
 
-	@Test
-	void convertRomanToArabic() {
-		RomanNumeralConverter converter = new RomanNumeralConverter();
-		
-		assertThat(converter.convert("I")).isEqualTo(1);
-		assertThat(converter.convert("II")).isEqualTo(2);
-		assertThat(converter.convert("III")).isEqualTo(3);
-		assertThat(converter.convert("IV")).isEqualTo(4);
-		assertThat(converter.convert("V")).isEqualTo(5);
-		assertThat(converter.convert("VI")).isEqualTo(6);
-		assertThat(converter.convert("VII")).isEqualTo(7);
-		assertThat(converter.convert("VIII")).isEqualTo(8);
-		assertThat(converter.convert("IX")).isEqualTo(9);
-		assertThat(converter.convert("X")).isEqualTo(10);
-		assertThat(converter.convert("XIV")).isEqualTo(14);
-		assertThat(converter.convert("XIX")).isEqualTo(19);
-		assertThat(converter.convert("XCIX")).isEqualTo(99);
-	}
-	
 	@Test
 	void convertArabicToRoman() {
 		ArabicNumeralConverter converter = new ArabicNumeralConverter();
@@ -45,6 +25,7 @@ public class RomanNumeralTest {
 		assertThat(converter.convert(8)).isEqualTo("VIII");
 		assertThat(converter.convert(9)).isEqualTo("IX");
 		assertThat(converter.convert(10)).isEqualTo("X");
+		assertThat(converter.convert(14)).isEqualTo("XIV");
 		assertThat(converter.convert(40)).isEqualTo("XL");
 		assertThat(converter.convert(50)).isEqualTo("L");
 		assertThat(converter.convert(90)).isEqualTo("XC");
@@ -66,31 +47,58 @@ public class RomanNumeralTest {
 		assertThat(converter.convert(900000)).isEqualTo("C̄M̄");
 		assertThat(converter.convert(1000000)).isEqualTo("M̄");
 	}
-	
+
 	@Test
 	void generateRomanToArabicAsserts() {
-		File output = new File("src/test/resources/RomanToArabicAsserts.txt");
-		try {
-			if (output.exists()) {
-				output.delete();
-			}
-			output.createNewFile();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (true) {
+			return;
 		}
+		ArabicNumeralConverter converter = new ArabicNumeralConverter();
+		File output = new File("src/test/java/ConvertRomanToArabicTest1.java");
+		makeFile(output);
 
-		try (FileWriter fileWriter = new FileWriter(output)) {
+		int fileNum = 1;
+		try {
+			FileWriter fileWriter = new FileWriter(output);
+			writeBeginningOfFile(fileNum, fileWriter);
 			for (int i = 1; i <= 1000000; i++) {
-				fileWriter.write("assertThat(converter.convert(\"i\")).isEqualTo(" + i + ");\n");
+				fileWriter.write("assertThat(converter.convert(\"" + converter.convert(i) + "\")).isEqualTo(" + i + ");\n");
+				if (i % 2000 == 0) {
+					fileWriter.write("\t}\n" +
+							"}");
+					fileWriter.close();
+					if (i < 1000000) {
+						fileNum++;
+						output = new File("src/test/java/ConvertRomanToArabicTest" + fileNum + ".java");
+						makeFile(output);
+						fileWriter = new FileWriter(output);
+						writeBeginningOfFile(fileNum, fileWriter);
+					}
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	@Test
-	void generateArabicToRomanAsserts() {
-		File output = new File("src/test/resources/ArabicToRomanAsserts.txt");
+
+	private void writeBeginningOfFile(int fileNum, FileWriter fileWriter) throws IOException {
+		fileWriter.write("package test.java;\n" +
+				"\n" +
+				"import static org.assertj.core.api.Assertions.*;\n" +
+				"\n" +
+				"import org.junit.jupiter.api.Test;\n" +
+				"\n" +
+				"import main.java.ArabicNumeralConverter;\n" +
+				"import main.java.RomanNumeralConverter;\n" +
+				"\n" +
+				"public class ConvertRomanToArabicTest" + fileNum + " {\n" +
+				"\n" +
+				"\t@Test\n" +
+				"\tvoid convertRomanToArabic" + fileNum + "() {\n" +
+				"\t\tRomanNumeralConverter converter = new RomanNumeralConverter();\n\n");
+	}
+
+	private void makeFile(File output) {
 		try {
 			if (output.exists()) {
 				output.delete();
@@ -99,6 +107,15 @@ public class RomanNumeralTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	void generateArabicToRomanAsserts() {
+		if (true) {
+			return;
+		}
+		File output = new File("src/test/resources/ArabicToRomanAsserts.txt");
+		makeFile(output);
 
 		try (FileWriter fileWriter = new FileWriter(output)) {
 			for (int i = 1; i <= 1000000; i++) {
